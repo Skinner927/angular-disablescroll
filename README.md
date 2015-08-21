@@ -1,36 +1,32 @@
-jquery-disablescroll
+angular-disablescroll
 ===
 
-Author: [Josh Harrison](http://www.joshharrison.net) at [Aloof](http://aloof.co)
+This is a port of [jquery-disablescroll](http://github.com/ultrapasty/jquery-disablescroll) by [Josh Harrison](http://www.joshharrison.net) from jQuery to Angular.
 
-Disables scrolling from scrollbars, mousewheels, touchmoves and keypresses on a given scrollable element, typically `$(window)`.
+Disables scrolling from scrollbars, mousewheels, touchmoves and keypresses on a given scrollable element, typically `angular.element($window)`.
 
-Use it while jQuery is animating the scroll position for a super-smooth ride!
+Has zero dependencies, pure Angular, **no** jQuery.
 
 
 Demo
 ---
-**http://jsfiddle.net/3n34qw6r/**
+**https://jsfiddle.net/skinner927/haxcxva6/**
 
 
 Example Usage
 ---
 
-    var $window = $(window);
-
-    // Disable user scrolling just before animating scrollTop.
-    // Note that the `handleScrollbar` option must be false if you want to
-    // modify the scroll position whilst it is disabled.
-    $window.disablescroll({
-        handleScrollbar: false
-    });
-
-    $("html, body").animate({ scrollTop: 500 }, "slow", function() {
-
-        // Enable user scrolling again when animated scrolling completes
-        $window.disablescroll("undo");
-
-    });
+    angular.module('foo', ['ElementScroll'])
+    
+    .controller('fooCtrl', [
+        '$scope', '$element', 'ElementScroll', 
+        function($scope, $element, ElementScroll) {
+            
+            $scope.lockScroll = function(){
+                ElementScroll.disableScrolling(angular.element($element));
+            };
+            
+        });
 
 
 Options
@@ -38,9 +34,15 @@ Options
 
 Can be passed on first use:
 
-    $element.disablescroll({
+    ElementScroll.disableScrolling(element, {
         option : value
-    });
+    })
+    
+or (granted an odd use case)
+
+    ElementScroll.enableScrolling(element, {
+        option : value
+    })
 
 Option            | Default Value                              | Description
 :---------------- | :----------------------------------------- | :---------------------------------------------------------
@@ -67,25 +69,12 @@ Keycode    | Key
 39         | Right Arrow
 40         | Down Arrow
 
-
-Non-jQuery Usage
----
-If you want to toy around with the object and its prototype, you can access it
-at `window.UserScrollDisabler`.
-
 Compatibility
 ---
 Tested in:
-- Mac: Chrome 38
-- Mac: Firefox 33.1
-- Mac: Safari 7.1
-- Windows: IE 7-11
-- Windows: Chrome 38
-- Windows: Firefox 33.1
-- Android: Chrome 38
-- iOS 7.1 and 8.1: Safari
+- Mac: Chrome 44
 
-Known Issues
+Known Issues (from jquery-disablescroll)
 ---
 - Mac Safari 7.1 is a bit flickery when dragging a disabled scrollbar.
 - One report of IE flickering when dragging a disabled scrollbar, although I
